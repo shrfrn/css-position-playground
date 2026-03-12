@@ -413,18 +413,27 @@ export default function App() {
 
             {/* Floating zoom control - pill shaped, bottom right */}
             <div
-              className="absolute bottom-3 right-3 z-50 flex flex-col items-center gap-2 py-3 px-2 rounded-full bg-slate-800/95 border border-slate-600 shadow-lg pointer-events-auto min-w-[40px]"
+              className="absolute bottom-3 right-3 z-50 flex flex-col items-center gap-3 py-3 px-2 rounded-full bg-slate-800/95 border border-slate-600 shadow-lg pointer-events-auto min-w-[40px]"
               role="group"
               aria-label="Canvas zoom"
             >
-              <ZoomIn className="w-4 h-4 text-slate-400 shrink-0" aria-hidden />
-              <div className="flex items-center justify-center h-28 w-6" style={{ transform: 'rotate(-90deg)' }}>
+              <button
+                type="button"
+                className="flex items-center justify-center w-7 h-7 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/70"
+                onDoubleClick={() => setZoom(1)}
+                aria-label="Reset zoom to 100%"
+              >
+                <ZoomIn className="w-4 h-4 text-slate-300 shrink-0" aria-hidden />
+              </button>
+
+              <div className="flex items-center justify-center h-32 w-8" style={{ transform: 'rotate(-90deg)' }}>
                 <input
                   type="range"
                   min={ZOOM_MIN * 100}
                   max={ZOOM_MAX * 100}
                   value={zoomPercent}
-                  onChange={(e) => setZoom(Number(e.target.value) / 100)}
+                  onChange={e => setZoom(Number(e.target.value) / 100)}
+                  onDoubleClick={() => setZoom(1)}
                   className="w-28 h-5 accent-sky-500 appearance-none bg-slate-600 rounded-full cursor-pointer range-vertical"
                   aria-label="Zoom level"
                   aria-valuemin={ZOOM_MIN * 100}
@@ -433,6 +442,7 @@ export default function App() {
                   aria-valuetext={`${zoomPercent}%`}
                 />
               </div>
+
               <ZoomOut className="w-4 h-4 text-slate-400 shrink-0" aria-hidden />
               <span className="text-xs font-mono text-slate-400 tabular-nums shrink-0" aria-hidden>{zoomPercent}%</span>
             </div>
@@ -448,6 +458,7 @@ export default function App() {
         .toast-fade-in { animation: toast-fade-in 0.2s ease-out forwards; }
         @keyframes toast-fade-out { to { opacity: 0; } }
         .toast-fade-out { animation: toast-fade-out 1.5s ease-out forwards; }
+        .range-vertical { padding-left: 10px; padding-right: 10px; }
         .range-vertical::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: #475569; }
         .range-vertical::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #0ea5e9; cursor: pointer; margin-top: -4px; }
         .range-vertical::-moz-range-track { height: 6px; border-radius: 3px; background: #475569; }
