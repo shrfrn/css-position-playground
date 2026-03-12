@@ -537,6 +537,11 @@ export default function App() {
         .range-vertical::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #0ea5e9; cursor: pointer; margin-top: -4px; }
         .range-vertical::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #0ea5e9; cursor: pointer; border: 0; }
         .theme-light [class*="text-slate-"] { color: #0f172a !important; }
+        .theme-light input,
+        .theme-light textarea {
+          color: #0f172a !important;
+          background-color: #ffffff !important;
+        }
       `}} />
     </div>
   )
