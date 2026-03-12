@@ -55,6 +55,8 @@ export default function App() {
   const ZOOM_MIN = 0.25
   const ZOOM_MAX = 1
   const zoomPercent = Math.round(zoom * 100)
+  const [theme, setTheme] = useState('dark')
+  const isDark = theme === 'dark'
 
   // Structure References
   const windowRef = useRef(null) // The fixed mock viewport (CB for fixed)
@@ -248,45 +250,93 @@ export default function App() {
   }, [syncMockBrowserHeight])
 
   return (
-    <div className="flex flex-col h-screen w-full bg-slate-900 text-slate-200 font-sans overflow-hidden">
+    <div
+      className={`theme-${theme} flex flex-col h-screen w-full font-sans overflow-hidden ${
+        isDark ? 'bg-slate-900 text-slate-200' : 'bg-slate-100 text-slate-900'
+      }`}
+    >
       {/* Full-width header */}
-      <header className="w-full shrink-0 p-5 border-b border-slate-700 flex items-center gap-3 bg-slate-800 z-20" role="banner">
-        <Settings2 className="w-6 h-6 text-indigo-400" aria-hidden />
-        <h1 className="text-xl font-bold text-white tracking-wide">CSS Position</h1>
+      <header
+        className={`w-full shrink-0 p-5 border-b flex items-center gap-3 z-20 ${
+          isDark ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'
+        }`}
+        role="banner"
+      >
+        <Settings2
+          className={`w-6 h-6 ${isDark ? 'text-indigo-300' : 'text-indigo-500'}`}
+          aria-hidden
+        />
+        <h1
+          className={`text-xl font-bold tracking-wide ${
+            isDark ? 'text-white' : 'text-slate-900'
+          }`}
+        >
+          CSS Position
+        </h1>
+        <div className="ml-auto">
+          <button
+            type="button"
+            onClick={() => setTheme(isDark ? 'light' : 'dark')}
+            className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
+              isDark
+                ? 'border-slate-600 bg-slate-900/80 text-slate-200 hover:bg-slate-800'
+                : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-100'
+            }`}
+            aria-label={`Switch to ${isDark ? 'light' : 'dark'} theme`}
+          >
+            {isDark ? 'Light theme' : 'Dark theme'}
+          </button>
+        </div>
       </header>
 
       <div className="flex flex-1 min-h-0 overflow-hidden">
         {/* Sidebar Controls */}
-        <div className="w-[480px] shrink-0 bg-slate-800 border-r border-slate-700 flex flex-col overflow-y-auto shadow-xl z-10 custom-scrollbar">
+        <div
+          className={`w-[480px] shrink-0 border-r flex flex-col overflow-y-auto shadow-xl z-10 custom-scrollbar ${
+            isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'
+          }`}
+        >
           <div ref={leftPanelContentRef} className="p-5 space-y-8">
           <ControlPanel
             title="Outer Element"
             config={outerConfig}
             setConfig={setOuterConfig}
-            onPosChange={(pos) => handlePosChange(true, pos)}
+            onPosChange={pos => handlePosChange(true, pos)}
             colorTheme="sky"
+            isDark={isDark}
           />
           <div ref={innerPanelRef}>
             <ControlPanel
               title="Inner Element"
               config={innerConfig}
               setConfig={setInnerConfig}
-              onPosChange={(pos) => handlePosChange(false, pos)}
+              onPosChange={pos => handlePosChange(false, pos)}
               colorTheme="orange"
+              isDark={isDark}
             />
           </div>
           </div>
         </div>
 
         {/* Main Area / Mock Browser */}
-        <div className="flex-1 px-8 pt-5 pb-0 flex flex-col items-center min-h-0 bg-slate-950 overflow-hidden relative">
+        <div
+          className={`flex-1 px-8 pt-5 pb-0 flex flex-col items-center min-h-0 overflow-hidden relative ${
+            isDark ? 'bg-slate-950' : 'bg-slate-100'
+          }`}
+        >
           <div
-            className={`w-full max-w-5xl bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden border border-slate-700 ${mockBrowserHeight ? '' : 'flex-1 min-h-0'}`}
+            className={`w-full max-w-5xl rounded-xl shadow-2xl flex flex-col overflow-hidden border ${
+              isDark ? 'bg-white border-slate-700' : 'bg-white border-slate-300'
+            } ${mockBrowserHeight ? '' : 'flex-1 min-h-0'}`}
             style={mockBrowserHeight ? { height: mockBrowserHeight } : undefined}
           >
 
           {/* Browser Header */}
-          <div className="h-14 bg-slate-100 border-b border-slate-300 flex items-center px-4 shrink-0">
+          <div
+            className={`h-14 border-b flex items-center px-4 shrink-0 ${
+              isDark ? 'bg-slate-100 border-slate-300' : 'bg-slate-50 border-slate-200'
+            }`}
+          >
             <div className="flex gap-2 w-20">
               <div className="w-3.5 h-3.5 rounded-full bg-red-400 shadow-inner"></div>
               <div className="w-3.5 h-3.5 rounded-full bg-amber-400 shadow-inner"></div>
@@ -305,7 +355,11 @@ export default function App() {
           {/* Viewport Canvas (Establishes Containing Block for Fixed Elements) */}
           <div
             ref={windowRef}
-            className="flex-1 relative overflow-hidden transform-gpu bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:20px_20px] text-slate-800"
+            className={`flex-1 relative overflow-hidden transform-gpu [background-size:20px_20px] ${
+              isDark
+                ? 'bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] text-slate-800'
+                : 'bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] text-slate-700'
+            }`}
           >
             {/* Toast: fixed/sticky hint (inside viewport) */}
             {toastVisible && (
@@ -413,7 +467,9 @@ export default function App() {
 
             {/* Floating zoom control - pill shaped, bottom right */}
             <div
-              className="absolute bottom-3 right-3 z-50 flex flex-col items-center gap-3 py-3 px-2 rounded-full bg-slate-800/95 border border-slate-600 shadow-lg pointer-events-auto min-w-[40px]"
+              className={`absolute bottom-3 right-3 z-50 flex flex-col items-center gap-3 py-3 px-2 rounded-full shadow-lg pointer-events-auto min-w-[40px] ${
+                isDark ? 'bg-slate-800/95 border border-slate-600' : 'bg-slate-200/95 border border-slate-300'
+              }`}
               role="group"
               aria-label="Canvas zoom"
             >
@@ -423,7 +479,10 @@ export default function App() {
                 onDoubleClick={() => setZoom(1)}
                 aria-label="Reset zoom to 100%"
               >
-                <ZoomIn className="w-4 h-4 text-slate-300 shrink-0" aria-hidden />
+                <ZoomIn
+                  className={`w-4 h-4 shrink-0 ${isDark ? 'text-slate-200' : 'text-slate-700'}`}
+                  aria-hidden
+                />
               </button>
 
               <div className="flex items-center justify-center h-32 w-8" style={{ transform: 'rotate(-90deg)' }}>
@@ -434,7 +493,9 @@ export default function App() {
                   value={zoomPercent}
                   onChange={e => setZoom(Number(e.target.value) / 100)}
                   onDoubleClick={() => setZoom(1)}
-                  className="w-28 h-5 accent-sky-500 appearance-none bg-slate-600 rounded-full cursor-pointer range-vertical"
+                  className={`w-28 h-5 accent-sky-500 appearance-none rounded-full cursor-pointer range-vertical ${
+                    isDark ? 'bg-slate-700' : 'bg-slate-300'
+                  }`}
                   aria-label="Zoom level"
                   aria-valuemin={ZOOM_MIN * 100}
                   aria-valuemax={ZOOM_MAX * 100}
@@ -443,8 +504,18 @@ export default function App() {
                 />
               </div>
 
-              <ZoomOut className="w-4 h-4 text-slate-400 shrink-0" aria-hidden />
-              <span className="text-xs font-mono text-slate-400 tabular-nums shrink-0" aria-hidden>{zoomPercent}%</span>
+              <ZoomOut
+                className={`w-4 h-4 shrink-0 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}
+                aria-hidden
+              />
+              <span
+                className={`text-xs font-mono tabular-nums shrink-0 ${
+                  isDark ? 'text-slate-300' : 'text-slate-700'
+                }`}
+                aria-hidden
+              >
+                {zoomPercent}%
+              </span>
             </div>
           </div>
           </div>
@@ -459,32 +530,48 @@ export default function App() {
         @keyframes toast-fade-out { to { opacity: 0; } }
         .toast-fade-out { animation: toast-fade-out 1.5s ease-out forwards; }
         .range-vertical { padding-left: 10px; padding-right: 10px; }
-        .range-vertical::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: #475569; }
+        .theme-dark .range-vertical::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: #475569; }
+        .theme-dark .range-vertical::-moz-range-track { height: 6px; border-radius: 3px; background: #475569; }
+        .theme-light .range-vertical::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: #cbd5f5; }
+        .theme-light .range-vertical::-moz-range-track { height: 6px; border-radius: 3px; background: #cbd5f5; }
         .range-vertical::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #0ea5e9; cursor: pointer; margin-top: -4px; }
-        .range-vertical::-moz-range-track { height: 6px; border-radius: 3px; background: #475569; }
         .range-vertical::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #0ea5e9; cursor: pointer; border: 0; }
+        .theme-light [class*="text-slate-"] { color: #0f172a !important; }
       `}} />
     </div>
   )
 }
 
 // Subcomponent for the Control Panel (Left Sidebar)
-function ControlPanel({ title, config, setConfig, onPosChange, colorTheme }) {
+function ControlPanel({ title, config, setConfig, onPosChange, colorTheme, isDark }) {
   const isOuter = colorTheme === 'sky'
   const [activeTab, setActiveTab] = useState('controls')
   const [codeText, setCodeText] = useState('')
 
-  const themeColors = {
-    title: isOuter ? 'text-sky-400' : 'text-orange-400',
-    bg: isOuter ? 'bg-sky-500/10' : 'bg-orange-500/10',
-    border: isOuter ? 'border-sky-500/30' : 'border-orange-500/30',
-    activeBtn: isOuter ? 'bg-sky-600 text-white border-sky-500' : 'bg-orange-600 text-white border-orange-500',
-    inactiveBtn: 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700 hover:text-slate-200',
-    sliderAccent: isOuter ? 'accent-sky-500' : 'accent-orange-500',
-    tabActive: isOuter ? 'border-sky-500 text-sky-400' : 'border-orange-500 text-orange-400',
-    tabInactive: 'border-transparent text-slate-500 hover:text-slate-400',
-    focusRing: isOuter ? 'focus:ring-sky-500/50' : 'focus:ring-orange-500/50'
-  }
+  const themeColors = isDark
+    ? {
+        title: isOuter ? 'text-sky-400' : 'text-orange-400',
+        bg: isOuter ? 'bg-sky-500/10' : 'bg-orange-500/10',
+        border: isOuter ? 'border-sky-500/30' : 'border-orange-500/30',
+        activeBtn: isOuter ? 'bg-sky-600 text-white border-sky-500' : 'bg-orange-600 text-white border-orange-500',
+        inactiveBtn: 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700 hover:text-slate-200',
+        sliderAccent: isOuter ? 'accent-sky-500' : 'accent-orange-500',
+        tabActive: isOuter ? 'border-sky-500 text-sky-400' : 'border-orange-500 text-orange-400',
+        tabInactive: 'border-transparent text-slate-500 hover:text-slate-400',
+        focusRing: isOuter ? 'focus:ring-sky-500/50' : 'focus:ring-orange-500/50',
+      }
+    : {
+        title: isOuter ? 'text-sky-700' : 'text-orange-700',
+        bg: isOuter ? 'bg-sky-50' : 'bg-orange-50',
+        border: isOuter ? 'border-sky-200' : 'border-orange-200',
+        activeBtn: isOuter ? 'bg-sky-600 text-white border-sky-500' : 'bg-orange-600 text-white border-orange-500',
+        inactiveBtn:
+          'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200 hover:text-slate-900',
+        sliderAccent: isOuter ? 'accent-sky-500' : 'accent-orange-500',
+        tabActive: isOuter ? 'border-sky-500 text-sky-700' : 'border-orange-500 text-orange-700',
+        tabInactive: 'border-transparent text-slate-500 hover:text-slate-700',
+        focusRing: isOuter ? 'focus:ring-sky-500/40' : 'focus:ring-orange-500/40',
+      }
 
   useEffect(() => {
     if (activeTab === 'controls') {
