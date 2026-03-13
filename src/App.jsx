@@ -525,22 +525,73 @@ export default function App() {
         .custom-scrollbar::-webkit-scrollbar { width: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #475569; border-radius: 20px; border: 2px solid #1e293b; }
+
         @keyframes toast-fade-in { from { opacity: 0; } to { opacity: 1; } }
         .toast-fade-in { animation: toast-fade-in 0.2s ease-out forwards; }
         @keyframes toast-fade-out { to { opacity: 0; } }
         .toast-fade-out { animation: toast-fade-out 1.5s ease-out forwards; }
-        .range-vertical { padding-left: 10px; padding-right: 10px; }
-        .theme-dark .range-vertical::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: #475569; }
-        .theme-dark .range-vertical::-moz-range-track { height: 6px; border-radius: 3px; background: #475569; }
-        .theme-light .range-vertical::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: #cbd5f5; }
-        .theme-light .range-vertical::-moz-range-track { height: 6px; border-radius: 3px; background: #cbd5f5; }
-        .range-vertical::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #0ea5e9; cursor: pointer; margin-top: -4px; }
-        .range-vertical::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #0ea5e9; cursor: pointer; border: 0; }
-        .theme-light [class*="text-slate-"] { color: #0f172a !important; }
-        .theme-light input,
-        .theme-light textarea {
-          color: #0f172a !important;
-          background-color: #ffffff !important;
+
+        /* ── Zoom slider (vertical) ── */
+        .range-vertical { padding: 0 10px; }
+        .theme-dark .range-vertical::-webkit-slider-runnable-track {
+          height: 6px; border-radius: 999px; background: #64748b;
+        }
+        .theme-dark .range-vertical::-moz-range-track {
+          height: 6px; border-radius: 999px; background: #64748b;
+        }
+        .theme-light .range-vertical::-webkit-slider-runnable-track {
+          height: 6px; border-radius: 999px; background: #94a3b8;
+        }
+        .theme-light .range-vertical::-moz-range-track {
+          height: 6px; border-radius: 999px; background: #94a3b8;
+        }
+        .range-vertical::-webkit-slider-thumb {
+          -webkit-appearance: none; width: 16px; height: 16px;
+          border-radius: 50%; background: #0ea5e9; cursor: pointer; margin-top: -5px;
+          box-shadow: 0 0 0 2px rgba(255,255,255,0.4);
+        }
+        .range-vertical::-moz-range-thumb {
+          width: 16px; height: 16px; border-radius: 50%;
+          background: #0ea5e9; cursor: pointer; border: 2px solid rgba(255,255,255,0.4);
+        }
+
+        /* ── Inset sliders (horizontal) ── */
+        .inset-range {
+          -webkit-appearance: none;
+          appearance: none;
+          background: transparent;
+          height: 20px;
+          cursor: pointer;
+        }
+        .theme-dark .inset-range::-webkit-slider-runnable-track {
+          height: 6px; border-radius: 999px; background: #64748b;
+        }
+        .theme-dark .inset-range::-moz-range-track {
+          height: 6px; border-radius: 999px; background: #64748b;
+        }
+        .theme-light .inset-range::-webkit-slider-runnable-track {
+          height: 6px; border-radius: 999px; background: #94a3b8;
+        }
+        .theme-light .inset-range::-moz-range-track {
+          height: 6px; border-radius: 999px; background: #94a3b8;
+        }
+        .inset-range-sky::-webkit-slider-thumb {
+          -webkit-appearance: none; width: 16px; height: 16px;
+          border-radius: 50%; background: #0ea5e9; cursor: pointer; margin-top: -5px;
+          box-shadow: 0 0 0 2px rgba(255,255,255,0.4), 0 2px 6px rgba(0,0,0,0.35);
+        }
+        .inset-range-sky::-moz-range-thumb {
+          width: 16px; height: 16px; border-radius: 50%;
+          background: #0ea5e9; cursor: pointer; border: 2px solid rgba(255,255,255,0.4);
+        }
+        .inset-range-orange::-webkit-slider-thumb {
+          -webkit-appearance: none; width: 16px; height: 16px;
+          border-radius: 50%; background: #f97316; cursor: pointer; margin-top: -5px;
+          box-shadow: 0 0 0 2px rgba(255,255,255,0.4), 0 2px 6px rgba(0,0,0,0.35);
+        }
+        .inset-range-orange::-moz-range-thumb {
+          width: 16px; height: 16px; border-radius: 50%;
+          background: #f97316; cursor: pointer; border: 2px solid rgba(255,255,255,0.4);
         }
       `}} />
     </div>
@@ -558,24 +609,41 @@ function ControlPanel({ title, config, setConfig, onPosChange, colorTheme, isDar
         title: isOuter ? 'text-sky-400' : 'text-orange-400',
         bg: isOuter ? 'bg-sky-500/10' : 'bg-orange-500/10',
         border: isOuter ? 'border-sky-500/30' : 'border-orange-500/30',
+        divider: 'border-slate-700/60',
         activeBtn: isOuter ? 'bg-sky-600 text-white border-sky-500' : 'bg-orange-600 text-white border-orange-500',
         inactiveBtn: 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700 hover:text-slate-200',
-        sliderAccent: isOuter ? 'accent-sky-500' : 'accent-orange-500',
         tabActive: isOuter ? 'border-sky-500 text-sky-400' : 'border-orange-500 text-orange-400',
         tabInactive: 'border-transparent text-slate-500 hover:text-slate-400',
         focusRing: isOuter ? 'focus:ring-sky-500/50' : 'focus:ring-orange-500/50',
+        sectionLabel: 'text-slate-400',
+        propLabel: 'text-slate-300',
+        sliderClass: isOuter ? 'inset-range-sky' : 'inset-range-orange',
+        numWidget: 'bg-slate-900 border-slate-700',
+        numInputActive: 'text-slate-200',
+        numInputAuto: 'text-slate-500 line-through decoration-slate-500/50',
+        pxActive: 'text-slate-400',
+        pxAuto: 'text-slate-600',
+        textarea: 'bg-slate-900 text-slate-300 border-slate-700',
       }
     : {
         title: isOuter ? 'text-sky-700' : 'text-orange-700',
         bg: isOuter ? 'bg-sky-50' : 'bg-orange-50',
         border: isOuter ? 'border-sky-200' : 'border-orange-200',
+        divider: 'border-slate-200',
         activeBtn: isOuter ? 'bg-sky-600 text-white border-sky-500' : 'bg-orange-600 text-white border-orange-500',
-        inactiveBtn:
-          'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200 hover:text-slate-900',
-        sliderAccent: isOuter ? 'accent-sky-500' : 'accent-orange-500',
+        inactiveBtn: 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50 hover:text-slate-900',
         tabActive: isOuter ? 'border-sky-500 text-sky-700' : 'border-orange-500 text-orange-700',
-        tabInactive: 'border-transparent text-slate-500 hover:text-slate-700',
+        tabInactive: 'border-transparent text-slate-400 hover:text-slate-700',
         focusRing: isOuter ? 'focus:ring-sky-500/40' : 'focus:ring-orange-500/40',
+        sectionLabel: 'text-slate-500',
+        propLabel: 'text-slate-700',
+        sliderClass: isOuter ? 'inset-range-sky' : 'inset-range-orange',
+        numWidget: 'bg-white border-slate-300 shadow-sm',
+        numInputActive: 'text-slate-800',
+        numInputAuto: 'text-slate-400 line-through decoration-slate-400/50',
+        pxActive: 'text-slate-500',
+        pxAuto: 'text-slate-400',
+        textarea: 'bg-slate-100 text-slate-800 border-slate-300',
       }
 
   useEffect(() => {
@@ -669,7 +737,7 @@ function ControlPanel({ title, config, setConfig, onPosChange, colorTheme, isDar
 
   return (
     <div className={`p-5 rounded-xl border ${themeColors.border} ${themeColors.bg}`}>
-      <div className="flex items-end justify-between border-b border-slate-700/60 mb-5">
+      <div className={`flex items-end justify-between border-b ${themeColors.divider} mb-5`}>
         <h2 className={`text-lg font-bold pb-2 flex items-center gap-2 ${themeColors.title}`}>
           <div className={`w-3 h-3 rounded-full ${isOuter ? 'bg-sky-500' : 'bg-orange-500'}`} />
           {title}
@@ -694,7 +762,7 @@ function ControlPanel({ title, config, setConfig, onPosChange, colorTheme, isDar
       {activeTab === 'controls' ? (
         <div className="animate-in fade-in duration-200">
           <div className="mb-6">
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Position</label>
+            <label className={`block text-xs font-semibold ${themeColors.sectionLabel} uppercase tracking-wider mb-3`}>Position</label>
             <div className="flex gap-1.5 w-full">
               {POSITIONS.map(pos => (
                 <button
@@ -709,14 +777,14 @@ function ControlPanel({ title, config, setConfig, onPosChange, colorTheme, isDar
           </div>
 
           <div className="space-y-4">
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Offsets (Insets)</label>
+            <label className={`block text-xs font-semibold ${themeColors.sectionLabel} uppercase tracking-wider mb-2`}>Offsets (Insets)</label>
             {['top', 'right', 'bottom', 'left'].map((prop) => {
               const disabled = config.position === 'static'
               const isAuto = config[prop].auto
 
               return (
                 <div key={prop} className={`flex items-center gap-3 transition-opacity ${disabled ? 'opacity-40 grayscale pointer-events-none' : ''}`}>
-                  <div className="w-14 text-sm font-medium text-slate-300 capitalize">{prop}</div>
+                  <div className={`w-14 text-sm font-medium ${themeColors.propLabel} capitalize`}>{prop}</div>
 
                   <button
                     onClick={() => handleInsetChange(prop, undefined, !isAuto)}
@@ -729,21 +797,21 @@ function ControlPanel({ title, config, setConfig, onPosChange, colorTheme, isDar
                     type="range"
                     min="-150" max="300"
                     value={config[prop].value}
-                    onChange={(e) => handleInsetChange(prop, e.target.value, false)}
+                    onChange={e => handleInsetChange(prop, e.target.value, false)}
                     onDoubleClick={() => handleInsetChange(prop, 0, false)}
                     disabled={disabled}
-                    className={`flex-1 h-1.5 rounded-lg appearance-none transition-all duration-200 cursor-pointer ${isAuto ? 'bg-slate-700/60 accent-slate-500 hover:accent-slate-400' : `bg-slate-700 ${themeColors.sliderAccent}`}`}
+                    className={`flex-1 appearance-none cursor-pointer inset-range ${themeColors.sliderClass} ${isAuto ? 'opacity-50' : ''}`}
                   />
 
-                  <div className="w-20 flex items-center bg-slate-800 border border-slate-700 rounded overflow-hidden">
-                     <input
+                  <div className={`w-20 flex items-center border rounded overflow-hidden ${themeColors.numWidget}`}>
+                    <input
                       type="number"
                       value={config[prop].value}
-                      onChange={(e) => handleInsetChange(prop, e.target.value, false)}
+                      onChange={e => handleInsetChange(prop, e.target.value, false)}
                       disabled={disabled}
-                      className={`w-full bg-transparent text-right pr-1 py-1 text-sm font-mono focus:outline-none transition-all duration-200 ${isAuto ? 'text-slate-500 line-through decoration-slate-500/50' : 'text-slate-200'}`}
+                      className={`w-full bg-transparent text-right pr-1 py-1 text-sm font-mono focus:outline-none transition-all duration-200 ${isAuto ? themeColors.numInputAuto : themeColors.numInputActive}`}
                     />
-                    <span className={`text-xs pr-2 font-mono transition-all duration-200 ${isAuto ? 'text-slate-600' : 'text-slate-500'}`}>px</span>
+                    <span className={`text-xs pr-2 font-mono transition-all duration-200 ${isAuto ? themeColors.pxAuto : themeColors.pxActive}`}>px</span>
                   </div>
                 </div>
               )
@@ -755,7 +823,7 @@ function ControlPanel({ title, config, setConfig, onPosChange, colorTheme, isDar
           <textarea
             value={codeText}
             onChange={handleCodeChange}
-            className={`w-full h-[180px] bg-slate-900 text-slate-300 font-mono text-[13px] leading-relaxed p-4 rounded-lg border border-slate-700 focus:outline-none focus:border-transparent focus:ring-2 resize-none ${themeColors.focusRing}`}
+            className={`w-full h-[180px] font-mono text-[13px] leading-relaxed p-4 rounded-lg border focus:outline-none focus:border-transparent focus:ring-2 resize-none ${themeColors.textarea} ${themeColors.focusRing}`}
             spellCheck="false"
           />
         </div>

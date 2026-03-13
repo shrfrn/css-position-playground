@@ -177,7 +177,7 @@ export default function App() {
 
       <div className="flex flex-1 min-h-0 overflow-hidden">
         {/* Sidebar Controls */}
-        <div className="w-[480px] shrink-0 bg-slate-800 border-r border-slate-700 flex flex-col overflow-y-auto shadow-xl z-10 custom-scrollbar">
+        <div className="w-[480px] shrink-0 bg-transparent border-r border-slate-800/70 flex flex-col overflow-y-auto shadow-xl z-10 custom-scrollbar">
           <div className="p-5 space-y-8">
           <ControlPanel
             title="Outer Element"
@@ -382,10 +382,78 @@ export default function App() {
           mask-size: 400% 100%;
           animation: shimmer-mask 1.5s ease-in-out 3 forwards;
         }
-        .range-vertical::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: #475569; }
-        .range-vertical::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #0ea5e9; cursor: pointer; margin-top: -4px; }
-        .range-vertical::-moz-range-track { height: 6px; border-radius: 3px; background: #475569; }
-        .range-vertical::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #0ea5e9; cursor: pointer; border: 0; }
+        .range-vertical::-webkit-slider-runnable-track {
+          height: 8px;
+          border-radius: 9999px;
+          background: linear-gradient(90deg, #1f2937, #4b5563);
+          box-shadow:
+            inset 0 0 0 1px rgba(15, 23, 42, 0.9),
+            0 0 0 1px rgba(15, 23, 42, 0.9);
+        }
+        .range-vertical::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          background: #0ea5e9;
+          cursor: pointer;
+          margin-top: -4px;
+        }
+        .range-vertical::-moz-range-track {
+          height: 8px;
+          border-radius: 9999px;
+          background: linear-gradient(90deg, #1f2937, #4b5563);
+          box-shadow:
+            inset 0 0 0 1px rgba(15, 23, 42, 0.9),
+            0 0 0 1px rgba(15, 23, 42, 0.9);
+        }
+        .range-vertical::-moz-range-thumb {
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          background: #0ea5e9;
+          cursor: pointer;
+          border: 0;
+        }
+        .inset-range::-webkit-slider-runnable-track {
+          height: 6px;
+          border-radius: 9999px;
+          background: radial-gradient(circle at 50% 50%, #64748b 0, #1f2937 55%);
+          box-shadow:
+            inset 0 0 0 1px rgba(15, 23, 42, 0.9),
+            0 0 0 1px rgba(15, 23, 42, 0.9);
+        }
+        .inset-range::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          width: 14px;
+          height: 14px;
+          border-radius: 9999px;
+          background: #e5e7eb;
+          box-shadow:
+            0 0 0 1px rgba(15, 23, 42, 0.9),
+            0 4px 8px rgba(15, 23, 42, 0.75);
+          cursor: pointer;
+          margin-top: -4px;
+        }
+        .inset-range::-moz-range-track {
+          height: 6px;
+          border-radius: 9999px;
+          background: radial-gradient(circle at 50% 50%, #64748b 0, #1f2937 55%);
+          box-shadow:
+            inset 0 0 0 1px rgba(15, 23, 42, 0.9),
+            0 0 0 1px rgba(15, 23, 42, 0.9);
+        }
+        .inset-range::-moz-range-thumb {
+          width: 14px;
+          height: 14px;
+          border-radius: 9999px;
+          background: #e5e7eb;
+          box-shadow:
+            0 0 0 1px rgba(15, 23, 42, 0.9),
+            0 4px 8px rgba(15, 23, 42, 0.75);
+          cursor: pointer;
+          border: 0;
+        }
       `}} />
     </div>
   );
@@ -570,7 +638,7 @@ function ControlPanel({ title, config, setConfig, onPosChange, colorTheme }) {
                     onChange={(e) => handleInsetChange(prop, e.target.value, false)}
                     onDoubleClick={() => handleInsetChange(prop, 0, false)}
                     disabled={disabled}
-                    className={`flex-1 h-1.5 rounded-lg appearance-none transition-all duration-200 cursor-pointer ${isAuto ? 'bg-slate-700/60 accent-slate-500 hover:accent-slate-400' : `bg-slate-700 ${themeColors.sliderAccent}`}`}
+                    className={`flex-1 h-1.5 rounded-lg appearance-none transition-all duration-200 cursor-pointer inset-range ${isAuto ? 'bg-slate-700/60 accent-slate-500 hover:accent-slate-400' : `bg-slate-700 ${themeColors.sliderAccent}`}`}
                   />
                   
                   <div className="w-20 flex items-center bg-slate-800 border border-slate-700 rounded overflow-hidden">
